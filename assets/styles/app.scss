@@ -3,4 +3,14 @@ body {
 }
 $primary: darken(#428bca, 20%);
 
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    grid-gap: 20px;
+}
+
+.card {
+    margin: 0;
+}
+
 @import "~bootstrap/scss/bootstrap";
