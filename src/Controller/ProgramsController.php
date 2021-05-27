@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
+use App\Form\ProgramType;
 use App\Repository\ProgramRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,6 +30,36 @@ class ProgramsController extends AbstractController
             'programs/index.html.twig',
             ['programs' => $programRepository->findAll()]
         );
+    }
+
+    /**
+     * @Route ("/new", name="new")
+     * @param Request $request
+     * @return Response
+     */
+
+    public function new(Request $request): Response
+    {
+        $program = new Program();
+        $form = $this->createForm(ProgramType::class, $program);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            // Deal with the submitted data
+            // For example : persiste & flush the entity
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($program);
+            $entityManager->flush();
+            // And redirect to a route that display the result
+            return $this->redirectToRoute('program_index');
+        }
+        return $this->render(
+            'programs/new.html.twig',
+            [
+                "form" => $form->createView(),
+            ]
+        );
+
     }
 
     /**
@@ -88,6 +120,8 @@ class ProgramsController extends AbstractController
 
         );
     }
+
+
 
     /**
      * @Route("/{programId<^[0-9]+$>}/seasons/{seasonId<^[0-9]+$>}/episodes/{episodeId<^[0-9]+$>}",  name="episode_show")
