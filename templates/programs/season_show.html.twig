@@ -3,13 +3,12 @@
     {% block title %}Season #{{ season.id }}{% endblock %}
 
     {% block body %}
+        <h1 class="mt-0">Detail Saison </h1>
+        <h1 class="mt-0">{{ program.title }} season {{ season.id }}</h1>
         <div class="container-fluid">
         <ul>
             <li>
                 Program : {{ program.id }}
-            </li>
-            <li>
-                Title : {{ program.title }}
             </li>
             <li>
                 Summary : {{ program.summary }}
@@ -30,7 +29,7 @@
         </ul>
 
         <div>
-            <h1> Episodes </h1>
+            <h1> All Episodes </h1>
         </div>
         {% for episode in episodes %}
         <div class="card" style="width: 18rem;">
@@ -39,7 +38,7 @@
                 <p class="card-text">Number : {{ episode.number }}</p>
                 <p class="card-text">Synopsis : {{ episode.synopsis }}</p>
 
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="{{ path('program_episode_show', {programId:program.id, seasonId: season.id, episodeId: episode.id}) }}" class="btn btn-primary">Go to episode</a>
             </div>
             </div>
         {% endfor %}
