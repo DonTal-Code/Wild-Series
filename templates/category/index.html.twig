@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CategoryController!{% endblock %}
+
+{% block body %}
+    <h1>Toutes les Categories: </h1>
+    {% for category in categories %}
+        <div>
+            <h2>{{ loop.index }} / {{ category.name }} </h2>
+            <a href="{{ path("category__show", { categoryName: category.name }) }}">Details</a>
+        </div>
+    {% else %}
+        Aucune série trouvée.
+    {% endfor %}
+    <a href="{{ path('category_new') }}">
+       Ajouter Categorie
+    </a>
+
+    <a href="{{ path('app_index') }}">
+        Retour à l'accueil
+    </a>
+{% endblock %}
