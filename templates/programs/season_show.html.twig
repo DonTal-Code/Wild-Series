@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Season #{{ season.id }}{% endblock %}
+
+    {% block body %}
+        <div class="container-fluid">
+        <ul>
+            <li>
+                Program : {{ program.id }}
+            </li>
+            <li>
+                Title : {{ program.title }}
+            </li>
+            <li>
+                Summary : {{ program.summary }}
+            </li>
+
+        </ul>
+
+        <ul>
+            <li>
+                Season: {{ season.number }}
+            </li>
+            <li>
+                Year: {{ season.year }}
+            </li>
+            <li>
+                Description : {{ season.description }}
+            </li>
+        </ul>
+
+        <div>
+            <h1> Episodes </h1>
+        </div>
+        {% for episode in episodes %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Title : {{ episode.title }}</h5>
+                <p class="card-text">Number : {{ episode.number }}</p>
+                <p class="card-text">Synopsis : {{ episode.synopsis }}</p>
+
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+            </div>
+        {% endfor %}
+            </div>
+
+    {% endblock %}
