@@ -2,17 +2,16 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Category;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
 
-class CategoryFixtures extends Fixture
+class EpisodeFixtures extends Fixture
 {
-
-
     public function load(ObjectManager $manager)
     {
-        // TODO: Implement load() method.
+        // $product = new Product();
+        // $manager->persist($product);
+
+        $manager->flush();
     }
 }

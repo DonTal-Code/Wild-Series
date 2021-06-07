@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProgramsController extends AbstractController
 {
     /**
-     * Show all rows from Program’s entity
+     * Show all rows from ProgramFixtures’s entity
      *
      * @Route("/", name="index")
      * @return Response A response instance
@@ -99,11 +99,11 @@ class ProgramsController extends AbstractController
     public function showSeason(Program $program, Season $season): Response
     {
         /*    $program = $this->getDoctrine()
-                ->getRepository(Program::class)
+                ->getRepository(ProgramFixtures::class)
                 ->findOneBy(['id' => $programId]);*/
 
         /* $season = $this->getDoctrine()
-             ->getRepository(Season::class)
+             ->getRepository(SeasonFixtures::class)
              ->findOneBy(['id' => $seasonId]);*/
 
         $episodes = $this->getDoctrine()

@@ -2,17 +2,16 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Category;
+use App\Entity\Program;
+use App\Entity\Season;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
 
-class CategoryFixtures extends Fixture
+class SeasonFixtures extends Fixture
 {
-
-
     public function load(ObjectManager $manager)
     {
-        // TODO: Implement load() method.
+
+        $manager->flush();
     }
 }

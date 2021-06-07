@@ -20,3 +20,6 @@ https://www.loom.com/share/2ceb52a157674597a5ee0c45abb3a7f7
 
 The video link of my quest 16:
 https://www.loom.com/share/0d3aea42d53c44d18727ba5cf49d73c3
+
+The video link of my quest 17:
+https://www.loom.com/share/e58850ce3c224958bee3d0cf9d8b1213
