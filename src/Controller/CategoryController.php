@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Program;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +39,8 @@ class CategoryController extends AbstractController
 
     /**
      * @Route ("/new", name="new")
+     * @IsGranted("ROLE_ADMIN")
+     * @param Request $request
      * @return Response
      */
 
@@ -48,6 +51,7 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+
             // Deal with the submitted data
             // For example : persiste & flush the entity
             $entityManager = $this->getDoctrine()->getManager();

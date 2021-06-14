@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Episode</h1>
-
+    <a href="{{ path('episode_index') }}">back to list</a>
     <table class="table">
         <tbody>
             <tr>
@@ -26,9 +26,57 @@
         </tbody>
     </table>
 
-    <a href="{{ path('episode_index') }}">back to list</a>
-
-    <a href="{{ path('episode_edit', {'id': episode.id}) }}">edit</a>
-
+    <a href="{{ path('episode_edit', {slug: episode.slug}) }}">edit</a>
     {{ include('episode/_delete_form.html.twig') }}
+
+    <div class="container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Comment</th>
+                <th>Rate</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <td>{{ comment.id }}</td>
+                    <td>{{ comment.comment }}</td>
+                    <td>{{ comment.rate }}</td>
+                    <td>
+                        <a href="{{ path('comment_show', {'id': comment.id}) }}">show</a>
+                        <a href="{{ path('comment_edit', {'id': comment.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+
+
+{% if app.user %}
+    <div class="container">
+    <h3> Laisser un commentaire </h3>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+
+
+
+{% else %}
+        <h3 style="display: none"> </h3>
+    </div>
+    {% endif %}
 {% endblock %}
