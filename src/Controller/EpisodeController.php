@@ -85,6 +85,7 @@ class EpisodeController extends AbstractController
     public function show(Episode $episode, Request $request, CommentRepository $commentRepository): Response
     {
         $comment = new Comment();
+
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
@@ -105,7 +106,38 @@ class EpisodeController extends AbstractController
             'comments' => $commentRepository->findAll(),
         ]);
 
+        $form = $this->createForm(CommentType::class, $comment, ['action' => $this->generateUrl('episode_comment', ['id' => $episode->getId()])]);
+        $form->handleRequest($request);
+
+            return $this->render('episode/show.html.twig', [
+                'episode' => $episode,
+                'form' => $form->createView(),
+                'comments' => $commentRepository->findAll(),
+            ]);
+        }
+
+    /**
+     * @Route("/{id}/comment", name="episode_comment", methods={"POST"})
+     */
+    public function comment(Request $request, Episode $episode): Response
+    {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $comment->setAuthor($this->getUser());
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+        }
+
+        return $this->redirectToRoute('episode_show', ['id' => $episode->getSlug()]);
+
     }
+
 
     /**
      * @Route("/{slug}/edit", name="episode_edit", methods={"GET","POST"})
@@ -137,7 +169,7 @@ class EpisodeController extends AbstractController
      */
     public function delete(Request $request, Episode $episode): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$episode->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $episode->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($episode);
             $entityManager->flush();

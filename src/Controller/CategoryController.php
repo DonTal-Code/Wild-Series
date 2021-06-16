@@ -51,6 +51,7 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+
             // Deal with the submitted data
             // For example : persiste & flush the entity
             $entityManager = $this->getDoctrine()->getManager();

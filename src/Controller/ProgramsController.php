@@ -9,6 +9,8 @@ use App\Form\ProgramType;
 use App\Form\SearchProgramFormType;
 use App\Repository\ProgramRepository;
 use App\Service\Slugify;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -138,12 +140,6 @@ class ProgramsController extends AbstractController
      */
     public function show(Program $program): Response
     {
-        /*if (!$program) {
-              throw $this->createNotFoundException(
-                  'No program with id : ' . $id . ' found in program\'s table.'
-              );
-          }*/
-
         $seasons = $this->getDoctrine()->getRepository(Season::class)
             ->findBy(['program' => $program]);
 
@@ -209,9 +205,8 @@ class ProgramsController extends AbstractController
     }
 
     /**
-     * @Route("/{program_id}", name="delete", methods={"POST"})
- * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"program_id": "slug"}})
-
+     * @Route("/{id}", name="delete", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
      */
 
     public function delete(Request $request, Program $program): Response
