@@ -85,6 +85,27 @@ class EpisodeController extends AbstractController
     public function show(Episode $episode, Request $request, CommentRepository $commentRepository): Response
     {
         $comment = new Comment();
+
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $comment->setAuthor($this->getUser());
+            $comment->setEpisode($this->getSlug());
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('episode_show');
+        }
+
+        return $this->render('episode/show.html.twig', [
+            'episode' => $episode,
+            'form' => $form->createView(),
+            'comment' => $comment,
+            'comments' => $commentRepository->findAll(),
+        ]);
+
         $form = $this->createForm(CommentType::class, $comment, ['action' => $this->generateUrl('episode_comment', ['id' => $episode->getId()])]);
         $form->handleRequest($request);
 
@@ -114,6 +135,7 @@ class EpisodeController extends AbstractController
         }
 
         return $this->redirectToRoute('episode_show', ['id' => $episode->getSlug()]);
+
     }
 
 
