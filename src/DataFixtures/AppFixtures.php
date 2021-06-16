@@ -7,78 +7,143 @@ use App\Entity\Category;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
+use App\Entity\User;
 use App\Factory\ActorFactory;
 use App\Factory\CategoryFactory;
 use App\Factory\EpisodeFactory;
 use App\Factory\ProgramFactory;
 use App\Factory\SeasonFactory;
+use App\Service\Slugify;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture implements DependentFixtureInterface
 {
+    private $slugify;
+    private $encoder;
+
+    public const CATEGORIES = [
+        'Action',
+        'Aventure',
+        'Animation',
+        'Fantastique',
+        'Horreur',
+
+    ];
+
+    public const ACTORS = [
+        'Norman Reedus',
+        'Andrew Lincoln',
+        'Lauren Cohan',
+        'Jeffrey Dean Morgan',
+        'Chandler Riggs',
+        'Denzel Washington',
+        'Henry Cavill'
+    ];
+
+    public function __construct(Slugify $slugify, UserPasswordEncoderInterface $encoder)
+    {
+        $this->slugify = $slugify;
+        $this->encoder = $encoder;
+    }
+
 
     public function load(ObjectManager $manager)
     {
-      $faker = FACTORY::create();
-
-      /*  for ($i = 0; $i < 6; $i++) {
-             $category = new Category();
-             $category->setName($faker->word());
-
-             $manager->persist($category);
-         }
-
-         for ($i = 0; $i < 6; $i++) {
-             $actor = new Actor();
-             $actor->setName($faker->word());
+        $faker = FACTORY::create();
+        $categories = [];
+        $actors = [];
+        $programs = [];
+        $seasons = [];
+        $users = [];
+        $year = 2010;
+        $number = 1;
 
 
-             $manager->persist($actor);
-         }*/
+        for ($i = 0; $i < 6; $i++) {
+            $category = new Category();
+            $category->setName($faker->word());
 
-        /*$categories = $manager->getRepository(Category::class)->findAll();
-        $actors = $manager->getRepository(Actor::class)->findAll();
+            $manager->persist($category);
+            $categories[] = $category;
+        }
 
+        for ($i = 0; $i < 6; $i++) {
+            $actor = new Actor();
+            $actor->setName($faker->name());
+
+            $manager->persist($actor);
+            $actors[] = $actor;
+        }
+        // Création d’un utilisateur de type “contributeur” (= auteur)
+        $contributor = new User();
+        $contributor->setEmail('contributor@monsite.com');
+        $contributor->setRoles(['ROLE_CONTRIBUTOR']);
+        $contributor->setPassword($this->encoder->encodePassword(
+            $contributor,
+            'contributorpassword'
+        ));
+
+        $manager->persist($contributor);
+        $users[] = $contributor;
+        // Création d’un utilisateur de type “administrateur”
+        $admin = new User();
+        $admin->setEmail('admin@monsite.com');
+        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setPassword($this->encoder->encodePassword(
+            $admin,
+            'adminpassword'
+        ));
+
+        $manager->persist($admin);
+        $users[] = $admin;
+        $manager->flush();
 
         for ($i = 0; $i < 6; $i++) {
             $program = new Program();
             $program->setTitle($faker->name);
             $program->setSummary($faker->text);
             $program->setPoster($faker->imageUrl($width = 400, $height = 260));
-            $program->setCategory($categories[array_rand($categories)]);
-            $program->addActor($actors[array_rand($actors)]);
+
+            $slug = $this->slugify->generate($program->getTitle());
+            $program->setSlug($slug);
+
+            $program->setCategory($faker->randomElement($categories));
+            $program->addActor($faker->randomElement($actors));
+            $program->setOwner($faker->randomElement($users));
 
             $manager->persist($program);
-
-        }*/
-
-        /*$programs = $manager->getRepository(Program::class)->findAll();
+            $programs[] = $program;
+        }
 
         for ($i = 0; $i < 6; $i++) {
             $season = new Season();
-            $season->setYear($faker->year);
-            $season->setNumber($faker->numberBetween(1, 15));
+            $season->setYear($year + $i);
+            $season->setNumber($number + $i);
             $season->setDescription($faker->text);
-            $season->setProgram($programs[array_rand($programs)]);
-            $manager->persist($season);
-        }*/
+            $season->setProgram($faker->randomElement($programs));
 
-       $seasons = $manager->getRepository(Season::class)->findAll();
+            $manager->persist($season);
+            $seasons[] = $season;
+        }
 
         for ($i = 0; $i < 6; $i++) {
             $episode = new Episode();
             $episode->setTitle($faker->name);
-            $episode->setNumber($faker->numberBetween(1, 15));
-            $episode->setSynopsis($faker->text);
-            $episode->setSeason($seasons[array_rand($seasons)]);
+            $episode->setNumber($number + $i);
+            $episode->setSynopsis($faker->paragraph);
+            $slug = $this->slugify->generate($episode->getTitle());
+            $episode->setSlug($slug);
+
+            $episode->setSeason($faker->randomElement($seasons));
             $manager->persist($episode);
         }
 
-
         $manager->flush();
+
     }
 
     public function getDependencies()
@@ -88,6 +153,8 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
             CategoryFixtures::class,
         ];
     }
+
+
 }
 
 

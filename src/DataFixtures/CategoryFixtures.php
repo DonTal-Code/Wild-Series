@@ -9,10 +9,22 @@ use Faker\Factory;
 
 class CategoryFixtures extends Fixture
 {
+    public const CATEGORIES = [
+        'Action',
+        'Aventure',
+        'Animation',
+        'Fantastique',
+        'Horreur',
 
-
+    ];
     public function load(ObjectManager $manager)
     {
-        // TODO: Implement load() method.
+       /* foreach (self::CATEGORIES as $key => $categoryName) {
+           $category = new Category();
+            $category->setName($categoryName);
+            $manager->persist($category);
+            $this->addReference('category_' . $key, $category);
+        }*/
+        $manager->flush();
     }
 }
