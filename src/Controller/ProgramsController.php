@@ -108,7 +108,7 @@ class ProgramsController extends AbstractController
      */
     public function edit(Request $request, Program $program, Slugify $slugify): Response
     {
-        if (!($this->getUser() == $program->getOwner())) {
+        if (!($this->getUser() == $program->getOwner())  && !in_array('ROLE_ADMIN',$this->getUser()->getRoles())) {
             // If not the owner, throws a 403 Access Denied exception
             throw new AccessDeniedException('Only the owner can edit the program!');
         }
@@ -205,7 +205,8 @@ class ProgramsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="delete", methods={"DELETE"})
+     * @Route("/{slug}", name="delete", methods={"POST"})
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"slug": "id"}})
      * @IsGranted("ROLE_ADMIN")
      */
 

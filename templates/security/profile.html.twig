@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+WELCOME TO YOUR PROFILE PAGE : {{ app.user.email }}
+
+<h3> Les récents programmes ajoutés</h3>
+ <table width="100%">
+  <thead>
+  <tr>
+   <td> Title</td>
+   <td> Summary </td>
+   <td> Poster </td>
+  </tr>
+  </thead>
+  <tbody>
+    {% for i in 0..3 %}
+        <td>{{ programs[i].title }}</td>
+        <td>{{ programs[i].summary }}</td>
+        <td> {{ programs[i].poster }}</td>
+  </tbody>
+  {% endfor %}
+</table>
+
+
+{% endblock %}

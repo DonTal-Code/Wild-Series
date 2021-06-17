@@ -22,7 +22,7 @@ class RegistrationController extends AbstractController
 
     public function __construct(EmailVerifier $emailVerifier)
     {
-        $this->emailVerifier = $emailVerifier;
+        /*$this->emailVerifier = $emailVerifier;*/
     }
 
     /**
@@ -30,7 +30,7 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
     {
-        $user = new User();
+       /* $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -67,7 +67,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
-        ]);
+        ]);*/
     }
 
     /**
@@ -75,7 +75,7 @@ class RegistrationController extends AbstractController
      */
     public function verifyUserEmail(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        /*$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
@@ -88,6 +88,6 @@ class RegistrationController extends AbstractController
 
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('app_index');
+        return $this->redirectToRoute('app_index');*/
     }
 }
