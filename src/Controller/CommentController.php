@@ -3,9 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Episode;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -98,17 +102,28 @@ class CommentController extends AbstractController
 
     /**
      * @Route("/{id}", name="comment_delete", methods={"POST"})
+     * @param Request $request
+     * @param Comment $comment
+
+     * @return Response
      */
-    public function delete(Request $request, Comment $comment): Response
+    public function delete(Request $request, Comment $comment, AuthorizationCheckerInterface $authorizationChecker): Response
     {
 
         if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token'))) {
+
+            if (!($this->getUser() == $comment->getAuthor()) && !in_array('ROLE_ADMIN',$this->getUser()->getRoles())) {
+
+                // If not the owner, throws a 403 Access Denied exception
+
+                throw new AccessDeniedException('Only the owner or an admin can delete the comment!');
+            }
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($comment);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('comment_index');
+        return $this->redirectToRoute('episode_index');
     }
 }

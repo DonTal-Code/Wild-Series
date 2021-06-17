@@ -104,6 +104,8 @@ class EpisodeController extends AbstractController
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
+        $comment->setOwner($this->getUser());
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -143,10 +145,10 @@ class EpisodeController extends AbstractController
 
     /**
      * @Route("/{id}", name="episode_delete", methods={"POST"})
-     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Episode $episode): Response
     {
+
         if ($this->isCsrfTokenValid('delete' . $episode->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($episode);
@@ -155,4 +157,6 @@ class EpisodeController extends AbstractController
 
         return $this->redirectToRoute('episode_index');
     }
+
+
 }

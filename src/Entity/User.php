@@ -53,10 +53,16 @@ class User implements UserInterface
      */
     private $isVerified = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="owner", orphanRemoval=true)
+     */
+    private $ownerComments;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->programs = new ArrayCollection();
+        $this->ownerComments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,6 +221,41 @@ class User implements UserInterface
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getOwnerComments(): Collection
+    {
+        return $this->ownerComments;
+    }
+
+    public function addOwnerComment(Comment $ownerComment): self
+    {
+        if (!$this->ownerComments->contains($ownerComment)) {
+            $this->ownerComments[] = $ownerComment;
+            $ownerComment->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOwnerComment(Comment $ownerComment): self
+    {
+        if ($this->ownerComments->removeElement($ownerComment)) {
+            // set the owning side to null (unless already changed)
+            if ($ownerComment->getOwner() === $this) {
+                $ownerComment->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIsVerified(): ?bool
+    {
+        return $this->isVerified;
     }
 
 
