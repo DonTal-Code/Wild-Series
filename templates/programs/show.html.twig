@@ -14,6 +14,14 @@
                 <p>Catégorie : {{ program.category.name }}</p>
             </div>
         </div>
+        <div>
+            <H3> WatchList </H3>
+            {% if app.user %}
+                <a href="{{ path('program_watchlist', {id: program.id})}}">
+                    <i class="bi {{ app.user.isInWatchlist(program) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+                </a>
+            {% endif %}
+        </div>
         <h3> Seasons </h3>
         {% for season in seasons %}
       <ul>

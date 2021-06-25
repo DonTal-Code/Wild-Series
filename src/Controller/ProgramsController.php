@@ -9,6 +9,7 @@ use App\Form\ProgramType;
 use App\Form\SearchProgramFormType;
 use App\Repository\ProgramRepository;
 use App\Service\Slugify;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -134,9 +135,9 @@ class ProgramsController extends AbstractController
     /**
      * Getting a program by id
      *
-     * @Route("/{program_id}", name="show")
-     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"program_id": "slug"}})
-     * @param int $id
+     * @Route("/{id}", name="show")
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"id": "id"}})
+     * @param Program $program
      * @return Response
      */
     public function show(Program $program): Response
@@ -220,6 +221,27 @@ class ProgramsController extends AbstractController
         $this->addFlash('danger', 'A Program has been deleted');
 
         return $this->redirectToRoute('program_index');
+    }
+
+    /**
+     * @Route("/{id}/watchlist", name="watchlist", methods={"GET","POST"})
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"id": "id"}})
+     */
+    public function addToWatchList(Request $request, Program $program, EntityManagerInterface $entityManager) : Response
+    {
+
+        $seasons = $program->getSeasons();
+        if ($this->getUser()->isInWatchlist($program)) {
+            $this->getUser()->removeWatchlist($program);
+        } else {
+            $this->getUser()->addWatchlist($program);
+        }
+        $entityManager->flush();
+
+        return $this->render('programs/show.html.twig', [
+            'program' => $program,
+            'seasons' => $seasons,
+        ]);
     }
 
 }
