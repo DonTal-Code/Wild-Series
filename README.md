@@ -47,3 +47,6 @@ https://www.loom.com/share/a10f730ec42d402a9b2561ca4d2b29c0
 
 The video link of my quest 25.1:
 https://www.loom.com/share/071ca93b502b4540b99f870a3faab883
+
+The video link of my quest 25.2:
+https://www.loom.com/share/c1f8310d74ad4e5382dbace83f424562

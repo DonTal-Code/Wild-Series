@@ -238,10 +238,10 @@ class ProgramsController extends AbstractController
         }
         $entityManager->flush();
 
-        return $this->render('programs/show.html.twig', [
-            'program' => $program,
-            'seasons' => $seasons,
+        return $this->json([
+            'isInWatchlist' => $this->getUser()->isInWatchlist($program)
         ]);
+
     }
 
 }

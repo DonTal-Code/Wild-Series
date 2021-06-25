@@ -12,10 +12,10 @@ import './styles/app.scss';
 import './bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-console.log('Hello Webpack Encore !')
+
 import logoPath from './images/favicon.ico';
 
-const $episode_category = $("#episode_category");
+/*const $episode_category = $("#episode_category");
 const $episode_program = $("#episode_program");
 const $token = $('#episode__token')
 $episode_category.change(function ()
@@ -47,7 +47,7 @@ $episode_program.change(function ()
     })
 
 
-
 function log($msg){
     console.log($msg)
-}
+}*/
+
