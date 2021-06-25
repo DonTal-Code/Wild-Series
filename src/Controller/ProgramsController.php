@@ -217,7 +217,7 @@ class ProgramsController extends AbstractController
             $entityManager->remove($program);
             $entityManager->flush();
         }
-        $this->addFlash('warning', 'A Program has been deleted');
+        $this->addFlash('danger', 'A Program has been deleted');
 
         return $this->redirectToRoute('program_index');
     }

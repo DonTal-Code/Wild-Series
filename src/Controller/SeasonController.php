@@ -93,7 +93,7 @@ class SeasonController extends AbstractController
             $entityManager->flush();
         }
 
-        $this->addFlash('warning', 'A Season has been deleted');
+        $this->addFlash('danger', 'A Season has been deleted');
 
         return $this->redirectToRoute('season_index');
     }

@@ -156,7 +156,7 @@ class EpisodeController extends AbstractController
             $entityManager->remove($episode);
             $entityManager->flush();
         }
-        $this->addFlash('warning', 'An Episode has been deleted');
+        $this->addFlash('danger', 'An Episode has been deleted');
 
         return $this->redirectToRoute('episode_index');
     }
