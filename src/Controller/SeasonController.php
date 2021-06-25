@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Season;
 use App\Form\SeasonType;
 use App\Repository\SeasonRepository;
+use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +39,9 @@ class SeasonController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($season);
             $entityManager->flush();
+
+            $this->addFlash('success', 'A new season has been created');
+
 
             return $this->redirectToRoute('season_index');
         }
@@ -89,6 +93,9 @@ class SeasonController extends AbstractController
             $entityManager->flush();
         }
 
+        $this->addFlash('warning', 'A Season has been deleted');
+
         return $this->redirectToRoute('season_index');
     }
+
 }

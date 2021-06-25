@@ -9,7 +9,6 @@ use App\Form\ProgramType;
 use App\Form\SearchProgramFormType;
 use App\Repository\ProgramRepository;
 use App\Service\Slugify;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -90,6 +89,8 @@ class ProgramsController extends AbstractController
                 ->subject('Une nouvelle série vient d\'être publiée !')
                 ->html($this->renderView('programs/newProgramEmail.html.twig', ['program' => $program]));
             $mailer->send($email);
+
+            $this->addFlash('success', 'The new program has been created');
             // And redirect to a route that display the result
             return $this->redirectToRoute('program_index');
         }
@@ -108,7 +109,7 @@ class ProgramsController extends AbstractController
      */
     public function edit(Request $request, Program $program, Slugify $slugify): Response
     {
-        if (!($this->getUser() == $program->getOwner())  && !in_array('ROLE_ADMIN',$this->getUser()->getRoles())) {
+        if (!($this->getUser() == $program->getOwner()) && !in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             // If not the owner, throws a 403 Access Denied exception
             throw new AccessDeniedException('Only the owner can edit the program!');
         }
@@ -184,7 +185,6 @@ class ProgramsController extends AbstractController
     }
 
 
-
     /**
      * @Route("/{programId<^[0-9]+$>}/seasons/{seasonId<^[0-9]+$>}/episodes/{episodeId<^[0-9]+$>}",  name="episode_show")
      * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programId": "id"}})
@@ -212,15 +212,14 @@ class ProgramsController extends AbstractController
 
     public function delete(Request $request, Program $program): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$program->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $program->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($program);
             $entityManager->flush();
-
         }
+        $this->addFlash('warning', 'A Program has been deleted');
 
         return $this->redirectToRoute('program_index');
     }
-
 
 }
