@@ -3,17 +3,17 @@
 {% block title %}Season index{% endblock %}
 
 {% block body %}
-    <h1>Season index</h1>
+    <h1>{{ 'Season Index'|trans }}</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Program</th>
-                <th>Number</th>
-                <th>Year</th>
-                <th>Description</th>
-                <th>actions</th>
+                <th>{{ 'Program'|trans }}</th>
+                <th>{{ 'Number'|trans }}</th>
+                <th>{{ 'Year'|trans }}</th>
+                <th>{{ 'Description'|trans }}</th>
+                <th>{{ 'Actions'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -25,19 +25,19 @@
                 <td>{{ season.year }}</td>
                 <td>{{ season.description }}</td>
                 <td>
-                    <a href="{{ path('season_show', {'id': season.id}) }}">show</a>
-                    <a href="{{ path('season_edit', {'id': season.id}) }}">edit</a>
+                    <a href="{{ path('season_show', {'id': season.id}) }}">{{ 'Show Details'|trans }}</a>
+                    <a href="{{ path('season_edit', {'id': season.id}) }}">{{ 'Edit'|trans }}</a>
                     {{ include('season/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">{{ 'No Records Found'|trans }}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('season_new') }}">Create new</a>
-    <a href="{{ path('excel')}}"> Export to XLS</a>
+    <a href="{{ path('season_new') }}"> {{ 'Add a season'|trans }}</a>
+    <a href="{{ path('excel')}}">{{ 'Export to XLS'|trans }}</a>
 {% endblock %}

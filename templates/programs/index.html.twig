@@ -3,35 +3,35 @@
 {% block title %}Hello ProgramsController!{% endblock %}
 
 {% block body %}
-    <h1>Toutes les séries de la table program : </h1>
+    <h1>{{ 'All Programs'|trans }} : </h1>
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button>Search</button>
+    <button>{{ 'Search'|trans }}</button>
     {{ form_end(form) }}
 
     {% for program in programs %}
         <div>
-            <h2>{{ loop.index }} / {{ program.title }} - Catégorie : {{ program.category.name }}</h2>
+            <h2>{{ loop.index }} / {{ program.title }} - {{ 'Category'|trans }} : {{ program.category.name }}</h2>
             <p>{{ program.summary }}</p>
 
-            <a href="{{ path("program_show", { 'id' : program.id }) }}">Voir la fiche</a>
+            <a href="{{ path("program_show", { 'id' : program.id }) }}">{{ 'Show Details'|trans }}</a>
 
 
             {% if is_granted("ROLE_ADMIN") %}
-                <a href="{{ path('program_edit', { 'slug' : program.slug }) }}">edit</a>
+                <a href="{{ path('program_edit', { 'slug' : program.slug }) }}">{{ 'Edit'|trans }}</a>
 
             {%endif%}
         </div>
     {% else %}
-        Aucune série trouvée.
+        {{ 'No Records Found'|trans }}
     {% endfor %}
     <a href="{{ path('program_new') }}">
-        Ajouter Série
+        {{ 'Add a Program'|trans }}
     </a>
 
     <a href="{{ path('app_index') }}">
-        Retour à l'accueil
+        {{ 'Back To Home'|trans }}
     </a>
 
 

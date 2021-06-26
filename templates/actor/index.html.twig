@@ -3,20 +3,20 @@
 {% block title %}Hello Acteurs!{% endblock %}
 
 {% block body %}
-    <h1>Tous les Acteurs: </h1>
+    <h1>{{ 'All Actors'|trans }}: </h1>
     {% for actor in actors %}
         <div>
             <h2>{{ loop.index }} / {{ actor.name }} </h2>
-            <a href="{{ path("actor_show", { id : actor.id }) }}">Details</a>
+            <a href="{{ path("actor_show", { id : actor.id }) }}">{{ 'Show Details'|trans }}</a>
         </div>
     {% else %}
-        Aucuns Acteurs trouvés.
+        {{ 'No Records Found'|trans }}
     {% endfor %}
     <a href="">
-        Ajouter Acteurs
+        {{ 'Add an Actor'|trans }}
     </a>
 
     <a href="{{ path('app_index') }}">
-        Retour à l'accueil
+        {{ 'Back To Home'|trans }}
     </a>
 {% endblock %}
