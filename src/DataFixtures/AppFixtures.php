@@ -41,8 +41,17 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         'Jeffrey Dean Morgan',
         'Chandler Riggs',
         'Denzel Washington',
-        'Henry Cavill'
+        'Henry Cavill',
     ];
+
+    public const IMAGES =
+        [
+            'public/uploads/logoljmbwhite-60d7414a7869b172061570.png',
+            'public/uploads/staffiepuppy.jpeg',
+            'public/uploads/staffiepuppyblack.jpeg',
+            'public/uploads/staffiepuppybleu.jpeg'
+
+        ];
 
     public function __construct(Slugify $slugify, UserPasswordEncoderInterface $encoder)
     {
@@ -82,10 +91,12 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         $contributor = new User();
         $contributor->setEmail('contributor@monsite.com');
         $contributor->setRoles(['ROLE_CONTRIBUTOR']);
-        $contributor->setPassword($this->encoder->encodePassword(
-            $contributor,
-            'contributorpassword'
-        ));
+        $contributor->setPassword(
+            $this->encoder->encodePassword(
+                $contributor,
+                'contributorpassword'
+            )
+        );
 
         $manager->persist($contributor);
         $users[] = $contributor;
@@ -93,10 +104,12 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         $admin = new User();
         $admin->setEmail('admin@monsite.com');
         $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setPassword($this->encoder->encodePassword(
-            $admin,
-            'adminpassword'
-        ));
+        $admin->setPassword(
+            $this->encoder->encodePassword(
+                $admin,
+                'adminpassword'
+            )
+        );
 
         $manager->persist($admin);
         $users[] = $admin;
@@ -106,7 +119,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
             $program = new Program();
             $program->setTitle($faker->name);
             $program->setSummary($faker->text);
-            $program->setPoster($faker->imageUrl($width = 400, $height = 260));
+
 
             $slug = $this->slugify->generate($program->getTitle());
             $program->setSlug($slug);
@@ -143,7 +156,6 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         }
 
         $manager->flush();
-
     }
 
     public function getDependencies()

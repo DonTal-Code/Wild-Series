@@ -14,6 +14,7 @@
         <div>
             <h2>{{ loop.index }} / {{ program.title }} - {{ 'Category'|trans }} : {{ program.category.name }}</h2>
             <p>{{ program.summary }}</p>
+            <img src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }}">
 
             <a href="{{ path("program_show", { 'id' : program.id }) }}">{{ 'Show Details'|trans }}</a>
 

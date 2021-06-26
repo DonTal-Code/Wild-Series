@@ -9,6 +9,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ProgramType extends AbstractType
 {
@@ -17,7 +19,7 @@ class ProgramType extends AbstractType
         $builder
             ->add('title', TextType::class, ['required' => false])
             ->add('summary', TextType::class, ['required' => false])
-            ->add('poster', TextType::class)
+            ->add('imageFile', VichFileType::class)
             ->add('category', null, ['choice_label' => 'name'])
         ;
         $builder->add('actors', EntityType::class, [
